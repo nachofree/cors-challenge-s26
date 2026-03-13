@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CORS Debug Client</title>
+</head>
+
+<body>
+
+<h2>CORS Test Client</h2>
+
+<button id="send">Send Request</button>
+
+<p id="result"></p>
+
+<script>
+
+document.getElementById("send").onclick = function(){
+
+    fetch("http://localhost:5001/api/data", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-Student-ID": "123"
+        },
+        body: JSON.stringify({
+            message: "hello"
+        })
+    })
+    .then(function(res){
+        return res.json();
+    })
+    .then(function(data){
+        document.getElementById("result").innerText =
+            JSON.stringify(data);
+    })
+    .catch(function(err){
+        console.error(err);
+        document.getElementById("result").innerText =
+            "Request failed — check DevTools console";
+    });
+
+};
+
+</script>
+
+</body>
+
+</html>

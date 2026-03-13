@@ -32,8 +32,16 @@ def check_team(url):
         return status
 
     try:
-        r = requests.options(url, timeout=3)
-        if r.status_code == 200:
+        r = requests.options(
+            url,
+            headers={
+                "Origin": "http://localhost",
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "Content-Type, X-Student-ID",
+            },
+            timeout=3,
+        )
+        if r.status_code in (200, 204):
             status["options_supported"] = True
         methods = r.headers.get("Access-Control-Allow-Methods", "")
         if "POST" in methods:
