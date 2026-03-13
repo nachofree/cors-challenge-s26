@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORS Escape Room — Register</title>
+  <style>
+    body { font-family: monospace; background: #0d1117; color: #c9d1d9; margin: 0; padding: 2rem; }
+    h1 { color: #58a6ff; margin-bottom: 0.25rem; }
+    .subtitle { color: #8b949e; margin-bottom: 2rem; font-size: 0.9rem; }
+    label { display: block; margin-bottom: 0.25rem; color: #8b949e; font-size: 0.85rem; }
+    input { display: block; width: 100%; max-width: 400px; padding: 0.5rem 0.75rem; margin-bottom: 1rem;
+            background: #161b22; border: 1px solid #30363d; color: #c9d1d9; border-radius: 4px;
+            font-family: monospace; font-size: 0.95rem; box-sizing: border-box; }
+    input:focus { outline: none; border-color: #58a6ff; }
+    button { padding: 0.5rem 1.25rem; background: #238636; color: #fff; border: none;
+             border-radius: 4px; font-family: monospace; font-size: 0.95rem; cursor: pointer; }
+    button:hover { background: #2ea043; }
+    button:disabled { background: #21262d; color: #8b949e; cursor: not-allowed; }
+    .message { margin-top: 1rem; padding: 0.6rem 1rem; border-radius: 4px; max-width: 400px; }
+    .message.success { background: #0d2a12; border: 1px solid #3fb950; color: #3fb950; }
+    .message.error   { background: #2d0e0e; border: 1px solid #f85149; color: #f85149; }
+    .back { margin-top: 1.5rem; }
+    .back a { color: #58a6ff; text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>Register Your Team</h1>
+  <p class="subtitle">Enter your team name and your tunnel URL to join the scoreboard.</p>
+  <form id="form">
+    <label for="name">Team Name</label>
+    <input type="text" id="name" name="name" placeholder="e.g. Team Alpha" required autocomplete="off">
+    <label for="url">API URL</label>
+    <input type="url" id="url" name="url" placeholder="https://xxx.trycloudflare.com/api/data" required autocomplete="off">
+    <button type="submit" id="btn">Register</button>
+  </form>
+  <div id="message" style="display:none"></div>
+  <p class="back"><a href="/">← Back to leaderboard</a></p>
+  <script>
+    document.getElementById("form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btn");
+      const msg = document.getElementById("message");
+      btn.disabled = true;
+      btn.textContent = "Registering...";
+      msg.style.display = "none";
+
+      fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: document.getElementById("name").value.trim(),
+          url: document.getElementById("url").value.trim()
+        })
+      })
+      .then(r => r.json().then(data => ({ ok: r.ok, data })))
+      .then(({ ok, data }) => {
+        msg.className = "message " + (ok ? "success" : "error");
+        msg.textContent = data.message || data.error;
+        msg.style.display = "block";
+        if (ok) {
+          document.getElementById("form").reset();
+          setTimeout(() => { window.location.href = "/"; }, 1500);
+        }
+      })
+      .catch(() => {
+        msg.className = "message error";
+        msg.textContent = "Network error — please try again.";
+        msg.style.display = "block";
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = "Register";
+      });
+    });
+  </script>
+</body>
+</html>

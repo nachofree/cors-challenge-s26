@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORS Escape Room — Leaderboard</title>
+  <style>
+    body { font-family: monospace; background: #0d1117; color: #c9d1d9; margin: 0; padding: 2rem; }
+    h1 { color: #58a6ff; margin-bottom: 0.25rem; }
+    .subtitle { color: #8b949e; margin-bottom: 2rem; font-size: 0.9rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #161b22; color: #8b949e; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid #30363d; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #21262d; }
+    tr:hover td { background: #161b22; }
+    .pass { color: #3fb950; }
+    .fail { color: #f85149; }
+    .score { font-weight: bold; color: #58a6ff; }
+    .progress { color: #3fb950; letter-spacing: -1px; }
+    .team-name { font-weight: bold; }
+    .empty { color: #8b949e; text-align: center; padding: 2rem; }
+    .register-link { margin-bottom: 1rem; }
+    .register-link a { color: #58a6ff; text-decoration: none; }
+    .register-link a:hover { text-decoration: underline; }
+    .updated { color: #8b949e; font-size: 0.8rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>CORS Escape Room</h1>
+  <p class="subtitle">Live challenge scoreboard — updates every 3 seconds</p>
+  <p class="register-link"><a href="/register.html">+ Register your team</a></p>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Team</th>
+        <th>Reachable</th>
+        <th>CORS Origin</th>
+        <th>OPTIONS</th>
+        <th>Methods</th>
+        <th>Headers</th>
+        <th>POST</th>
+        <th>Score</th>
+        <th>Progress</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <tr><td class="empty" colspan="10">Loading...</td></tr>
+    </tbody>
+  </table>
+  <p class="updated" id="updated"></p>
+  <script src="/static/leaderboard.js"></script>
+</body>
+</html>
