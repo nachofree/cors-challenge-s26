@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 
 
-@app.route("/api/data", methods=["GET", "POST"])
+@app.route("/api/data", methods=["GET"])
 def data():
     #put headers in a list here
     headers = {

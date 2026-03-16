@@ -1,7 +1,7 @@
 import threading
 import time
 import requests
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, send_from_directory
 
 app = Flask(__name__)
 
@@ -41,7 +41,7 @@ def check_team(url):
             },
             timeout=3,
         )
-        if r.status_code in (200, 204):
+        if r.status_code in (200, 204) and r.headers.get("Access-Control-Allow-Methods"):
             status["options_supported"] = True
         methods = r.headers.get("Access-Control-Allow-Methods", "")
         if "POST" in methods:
@@ -83,6 +83,28 @@ def polling_loop():
 thread = threading.Thread(target=polling_loop, daemon=True)
 thread.start()
 
+@app.route("/downloadindex")
+def download_index():
+    return send_from_directory(
+        directory="forstudents",
+        path="index.html",
+        as_attachment=True
+    )
+@app.route("/downloadapp")
+def download_app():
+    return send_from_directory(
+        directory="forstudents",
+        path="app.py",
+        as_attachment=True
+    )
+
+@app.route("/downloadreadme")
+def download_readme():
+    return send_from_directory(
+        directory="forstudents",
+        path="readme.txt",
+        as_attachment=True
+    )
 
 @app.route("/")
 def index():
@@ -134,4 +156,4 @@ def get_teams():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)
