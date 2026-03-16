@@ -7,7 +7,7 @@ ngrok is used to expose your local dev site to the world. In order for my app to
 After you have copied your authtoken. Make sure that ngrok client is installed on your os:
 
 - brew install ngrok (or)
-- sudo apt install ngrok
+- sudo apt install ngrok (or maybe it is sudo snap install ngrok)
 
 Then you can do 'ngrok config add-authtoken $YOUR_AUTHTOKEN'.
 
